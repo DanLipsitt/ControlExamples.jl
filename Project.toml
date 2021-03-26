@@ -1,0 +1,5 @@
+[deps]
+ControlSystemIdentification = "3abffc1c-5106-53b7-b354-a47bfc086282"
+ControlSystems = "a6e380b2-a6ca-5380-bf3e-84a91bcd477e"
+IJulia = "7073ff75-c697-5162-941a-fcdaad2a7d2a"
+OrdinaryDiffEq = "1dea7af3-3e70-54e6-95c3-0bf5283fa5ed"
