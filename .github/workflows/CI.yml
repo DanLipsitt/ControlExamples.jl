@@ -37,6 +37,9 @@ jobs:
             ${{ runner.os }}-test-${{ env.cache-name }}-
             ${{ runner.os }}-test-
             ${{ runner.os }}-
+      - name: Install IJulia
+        # Although IJulia is in Project.toml, it won't be available to Jupyter unless we do something to force it.
+        run: julia -e 'using IJulia'
       - run: pip install jupyter
       - name: Run notebooks
         run: jupyter nbconvert --ExecutePreprocessor.kernel_name='julia-1.5' --to=notebook --execute *.ipynb
