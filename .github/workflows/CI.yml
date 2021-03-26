@@ -17,7 +17,7 @@ jobs:
           cmd: 'ls *.ipynb | jq -R . | jq -sc .'
       - run: 'echo "${{steps.notebooks.outputs.value}}"'
   test:
-    name: Julia ${{ matrix.julia-version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }} - ${{ matrix.notebook }}
+    name: Julia ${{ matrix.julia-version }} - ${{ matrix.notebook }}
     needs: notebooks
     runs-on: ${{ matrix.os }}
     strategy:
