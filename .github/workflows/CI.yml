@@ -8,13 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.notebooks.outputs.value }}
-    steps:     
+    steps:
+      - uses: actions/checkout@v2
       - name: List Notebooks as JSON
         uses: sergeysova/jq-action@v2
         id: notebooks
         with:
           cmd: 'ls *.ipynb | jq -R . | jq -s .'
-      - run: 'echo "${{steps.notebook.outputs.value}}"'
+      - run: 'echo "${{steps.notebooks.outputs.value}}"'
   test:
     name: Julia ${{ matrix.julia-version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }} - ${{ matrix.notebook }}
     needs: notebooks
@@ -33,15 +34,13 @@ jobs:
           - x64
         notebook: ${{ fromJSON(needs.notebooks.outputs.matrix) }}
     steps:
-
-      - uses: actions/checkout@v2
       - uses: julia-actions/setup-julia@v1
         with:
           version: ${{ matrix.julia-version }}
           arch: ${{ matrix.arch }}
       - uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}        
+          python-version: ${{ matrix.python-version }}
       - uses: actions/cache@v1
         env:
           cache-name: cache-artifacts
