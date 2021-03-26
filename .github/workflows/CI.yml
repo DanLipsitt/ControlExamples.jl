@@ -3,8 +3,20 @@ on:
   - push
   - pull_request
 jobs:
+  notebooks:
+    name: List Notebooks
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.notebooks.outputs.value }}
+    steps:     
+      - name: List Notebooks as JSON
+        uses: sergeysova/jq-action@2
+        id: notebooks
+        with:
+          cmd: 'ls | jq -R . | jq -s .'
   test:
-    name: Julia ${{ matrix.julia-version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
+    name: Julia ${{ matrix.julia-version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }} - ${{ matrix.notebook }}
+    needs: notebooks
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -18,7 +30,9 @@ jobs:
           - ubuntu-latest
         arch:
           - x64
+        notebook: ${{ fromJSON(needs.notebooks.outputs.matrix) }}
     steps:
+
       - uses: actions/checkout@v2
       - uses: julia-actions/setup-julia@v1
         with:
@@ -42,4 +56,4 @@ jobs:
         run: julia -e 'using Pkg; Pkg.activate("."); Pkg.instantiate()'
       - run: pip install jupyter
       - name: Run notebooks
-        run: jupyter nbconvert --ExecutePreprocessor.kernel_name='julia-1.5' --to=notebook --execute *.ipynb
+        run: jupyter nbconvert --ExecutePreprocessor.kernel_name='julia-1.5' --to=notebook --execute ${{ notebook }}
