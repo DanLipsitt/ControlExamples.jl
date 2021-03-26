@@ -10,7 +10,7 @@ jobs:
       matrix: ${{ steps.notebooks.outputs.value }}
     steps:     
       - name: List Notebooks as JSON
-        uses: sergeysova/jq-action@2
+        uses: sergeysova/jq-action@v2
         id: notebooks
         with:
           cmd: 'ls | jq -R . | jq -s .'
