@@ -56,4 +56,4 @@ jobs:
         run: julia -e 'using Pkg; Pkg.activate("."); Pkg.instantiate()'
       - run: pip install jupyter
       - name: Run notebooks
-        run: jupyter nbconvert --ExecutePreprocessor.kernel_name='julia-1.5' --to=notebook --execute ${{ notebook }}
+        run: jupyter nbconvert --ExecutePreprocessor.kernel_name='julia-1.5' --to=notebook --execute ${{ matrix.notebook }}
