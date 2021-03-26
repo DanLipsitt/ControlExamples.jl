@@ -14,7 +14,7 @@ jobs:
         uses: sergeysova/jq-action@v2
         id: notebooks
         with:
-          cmd: 'ls *.ipynb | jq -R . | jq -s .'
+          cmd: 'ls *.ipynb | jq -R . | jq -sc .'
       - run: 'echo "${{steps.notebooks.outputs.value}}"'
   test:
     name: Julia ${{ matrix.julia-version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }} - ${{ matrix.notebook }}
